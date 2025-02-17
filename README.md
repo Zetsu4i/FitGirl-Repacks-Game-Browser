@@ -1,5 +1,5 @@
 # FitGirl Repacks Game Browser
-### [FGRG Browser](https://fgrg-browser.github.io/)
+### [FGRG Browser](https://zetsu4i.github.io/FitGirl-Repacks-Game-Browser/)
 
 ### Used plugins:
 
