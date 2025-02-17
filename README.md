@@ -17,5 +17,5 @@ all games are from fitgirl repack site we just share refrence links
 
 
 ### run localy with docker 
-docker build -t web-image:v2 . 
-docker run -d -p 8080:80 web-image:v2
+- docker build -t web-image:v2 .
+- docker run -d -p 8080:80 web-image:v2
