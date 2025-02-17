@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>FitGirl Repacks Game Browser</title>
+  <link rel="icon" href="favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Browse and search FitGirl Repacks games with advanced filtering and sorting">
+
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: var(--background-gradient);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .header h1 {
+      color: var(--primary-color);
+      margin: 0;
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .search-container {
+      flex: 1 1 300px;
+      position: relative;
+    }
+
+    .search-box {
+      width: 95%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .filter-select {
+      flex: 0 1 200px;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-select:focus {
+      outline: none;
+      border-color: var(--secondary-color);
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .handsontable {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .ad-banner {
+      background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 2rem 0;
+      text-align: center;
+      box-shadow: var(--box-shadow);
+    }
+
+    .ad-text {
+      background: var(--secondary-color);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      display: inline-block;
+      font-weight: 600;
+      transition: transform 0.2s ease;
+    }
+
+    .ad-text:hover {
+      transform: translateY(-2px);
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid var(--secondary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .handsontable td {
+      vertical-align: middle;
+      padding: 12px !important;
+    }
+
+    .handsontable th {
+      background: var(--primary-color) !important;
+      color: white !important;
+      font-weight: 600 !important;
+    }
+
+    .handsontable .ht_master .wtHolder {
+      scrollbar-width: thin;
+      scrollbar-color: var(--secondary-color) rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+      }
+
+      .filter-select {
+        width: 100%;
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loading-overlay" id="loading">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="container">
+    <header class="header">
+      <h1>FitGirl Repacks Game Browser</h1>
+    </header>
+
+    <div class="ad-banner">
+      <!-- <a href="mailto:your-email@example.com?subject=Ad Placement" class="ad-text">
+        📢 Advertise Here - 1k Monthly Views • $4/month
+      </a> -->
+
+<script type="text/javascript">
+  atOptions = {
+    'key': 'd2f8cb949e5040bd403f33feff305a30',
+    'format': 'iframe',
+    'height': 90,
+    'width': 728,
+    'params': {}
+  };
+</script>
+<script type="text/javascript"
+  src="//www.highperformanceformat.com/d2f8cb949e5040bd403f33feff305a30/invoke.js"></script>
+    </div>
+
+    <div class="controls">
+      <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search games..." id="searchInput">
+      </div>
+      <select class="filter-select" id="genreFilter">
+        <option value="">All Genres</option>
+      </select>
+    </div>
+
+    <div id="handsontable-container"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/handsontable@13/dist/handsontable.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5"></script>
+  <script>
+    let hotInstance, allData = [], uniqueGenres = new Set();
+    let searchTimeout;
+
+    // Loading overlay control
+    const loadingOverlay = document.getElementById('loading');
+
+    async function loadData() {
+      try {
+        const response = await fetch('/fitgirl_games.csv');
+        const csv = await response.text();
+
+        Papa.parse(csv, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (results) => {
+            allData = results.data.map(item => ({
+              ...item,
+              size_in_gb: parseFloat(item.size_in_gb),
+              genres: item.genres.split(',').map(g => g.trim())
+            }));
+
+            allData.forEach(item => item.genres.forEach(g => uniqueGenres.add(g)));
+            populateGenreFilter([...uniqueGenres].sort());
+            initializeTable(allData);
+            loadingOverlay.style.display = 'none';
+          },
+          error: () => handleError()
+        });
+      } catch (error) {
+        handleError();
+      }
+    }
+
+    function handleError() {
+      loadingOverlay.innerHTML = '<p>⚠️ Failed to load data. Please try refreshing the page.</p>';
+    }
+
+    function populateGenreFilter(genres) {
+      const filter = document.getElementById('genreFilter');
+      genres.forEach(genre => {
+        const option = document.createElement('option');
+        option.value = genre;
+        option.textContent = genre;
+        filter.appendChild(option);
+      });
+    }
+
+    function initializeTable(data) {
+      const container = document.getElementById('handsontable-container');
+      container.innerHTML = '';
+
+      hotInstance = new Handsontable(container, {
+        data: data,
+        rowHeaders: true,
+        colHeaders: ['Title', 'Cover', 'Description', 'Size (GB)', 'Genres', 'Links', 'Release Date'],
+        columns: [
+          { data: 'title', width: 180 },
+          {
+            data: 'image', width: 160,
+            renderer: (instance, td, row, col, prop, value) => {
+              td.innerHTML = value ? `
+                <div class="image-container" style="padding: 8px;">
+                  <img src="${value}" 
+                       style="max-height: 120px; width: auto; border-radius: 4px; cursor: pointer;"
+                       onclick="window.open('${value}', '_blank')">
+                </div>
+              ` : '';
+              return td;
+            }
+          },
+          { data: 'description', width: 300, wordWrap: true },
+          { data: 'size_in_gb', width: 90, type: 'numeric', numericFormat: { pattern: '0.00' } },
+          { data: 'genres', width: 180 },
+          {
+            data: 'game_url', width: 120,
+            renderer: (instance, td, row, col, prop, value) => {
+              td.innerHTML = value ? `
+                <a href="${value}" 
+                   target="_blank" 
+                   style="padding: 6px 12px; background: var(--secondary-color); color: white; 
+                          border-radius: 4px; text-decoration: none; display: inline-block;">
+                  Download
+                </a>
+              ` : '';
+              return td;
+            }
+          },
+          { data: 'release_date', width: 120 }
+        ],
+        height: '65vh',
+        width: '100%',
+        licenseKey: 'non-commercial-and-evaluation',
+        multiColumnSorting: true,
+        manualColumnResize: true,
+        manualRowResize: true,
+        filters: true,
+        dropdownMenu: true,
+        contextMenu: true,
+        hiddenColumns: { columns: ['size', 'page'], indicators: true },
+        stretchH: 'all',
+        autoWrapRow: true,
+        visualRowRange: 50,
+        renderAllRows: false
+      });
+
+      // Add debounced event listeners
+      document.getElementById('searchInput').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(filterTable, 300);
+      });
+
+      document.getElementById('genreFilter').addEventListener('change', filterTable);
+    }
+
+    function filterTable() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const selectedGenre = document.getElementById('genreFilter').value;
+
+      const filteredData = allData.filter(item => {
+        const matchesSearch = item.title.toLowerCase().includes(searchTerm) ||
+          item.description.toLowerCase().includes(searchTerm);
+
+        const matchesGenre = !selectedGenre ||
+          item.genres.some(genre => genre === selectedGenre);
+
+        return matchesSearch && matchesGenre;
+      });
+
+      hotInstance.loadData(filteredData);
+    }
+
+    // Initial load
+    loadData();
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable@13/dist/handsontable.full.min.css">
+</body>
+
+</html>
